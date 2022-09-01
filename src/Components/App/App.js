@@ -51,6 +51,17 @@ class App extends React.Component {
         }
       ]
     }
+    this.addTrack = this.addTrack.bind(this);
+  }
+
+  addTrack(track) {
+    if (!Object.values(this.state.playlistTracks).includes(track)) {
+      this.setState({
+        playlistTracks: this.state.playlistTracks.concat(track)
+      })
+    } else {
+      return;
+    }
   }
 
   render() {
@@ -60,7 +71,8 @@ class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults searchResults={this.state.searchResults}/>
+            <SearchResults searchResults={this.state.searchResults} 
+              onAdd={this.addTrack}/>
             <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}/>
          </div>
       </div>
