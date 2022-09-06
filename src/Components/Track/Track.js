@@ -9,7 +9,8 @@ class Track extends React.Component {
 
     this.state = {
       trackPlaying: false,
-      audio: new Audio(this.props.track.previewURL)
+      audio: new Audio(this.props.track.previewURL),
+      trackAvailable: true
     }
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -37,15 +38,19 @@ class Track extends React.Component {
 
   playPreview() {
     if (!this.props.track.previewURL) {
-      alert("This track doesn't have a preview feature in Spotify's API. Sorry.")
+      this.setState({ trackAvailable: false });
+      return;
     }
 
     if (this.state.trackPlaying) {
-      this.state.audio.pause()
-      this.setState({ trackPlaying: false})
+      this.state.audio.pause();
+      this.setState({ trackPlaying: false });
     } else {
-      this.state.audio.play();
-      this.setState({ trackPlaying: true})
+        this.state.audio.play();
+        this.setState({ trackPlaying: true });
+        this.state.audio.addEventListener("ended", (event) => {
+          this.setState({ trackPlaying: false});
+        })
     }
   }
   
@@ -56,6 +61,7 @@ class Track extends React.Component {
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artist} | {this.props.track.album}</p>
         </div>
+        {!this.state.trackAvailable && <p className="Track-no-preview">Preview is not available for this track</p>}
         {!this.state.trackPlaying && <button className="Track-preview" onClick={this.playPreview}>&gt;</button>}
         {this.state.trackPlaying && <button className="Track-preview" onClick={this.playPreview}>||</button>}
         {this.renderAction()}

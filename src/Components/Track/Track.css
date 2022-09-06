@@ -49,3 +49,9 @@
 .Track-preview:hover {
   color: rgba(265, 265, 265, .5);
 }
+
+.Track-no-preview {
+  color: #ff0000;
+  font-size: .83rem;
+  padding-left: .5rem;
+}
